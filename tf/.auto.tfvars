@@ -7,6 +7,6 @@ firewall_rules = [
   {
     protocol   = "tcp"
     port       = "*"
-    source_ips = ["*"]
+    source_ips = ["0.0.0.0/0"]
   }
 ]
