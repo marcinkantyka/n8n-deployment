@@ -5,9 +5,11 @@ resource "hcloud_server" "server_test" {
   server_type = "cx22"
   datacenter = "fsn1-dc14"
   
-  labels = {
-    "managed by" : "tf"
-  }
+
+
+    labels = {
+        "created_by"  = "terraform"
+    }
  
   public_net {
     ipv4_enabled = false
