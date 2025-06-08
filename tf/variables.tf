@@ -15,3 +15,8 @@ variable "server_name" {
   type        = string
   default     = "tf-server"
 } 
+
+variable "ssh_key_name" {
+  description = "name of the ssh key to be used"
+  type        = string
+}
