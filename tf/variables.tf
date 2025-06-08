@@ -13,7 +13,7 @@ variable "firewall_rules" {
 variable "server_name" {
   description = "name of the server to be created"
   type        = string
-  default     = "tf-server"
+  default     = "goblin"
 } 
 
 variable "ssh_key_name" {
