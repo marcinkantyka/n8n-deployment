@@ -15,3 +15,5 @@ firewall_rules = [
     source_ips = ["217.119.67.226/32"]
   }
 ]
+
+ssh_key_name = "wsl-ssh-pub"
