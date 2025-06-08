@@ -14,7 +14,7 @@ resource "hcloud_server" "server_test" {
     ipv6_enabled = true
   }
 
-    firewall_ids = data.hcloud_firewall.firewall.id
+    firewall_ids = [hcloud_firewall.custom.id]
 
     user_data = <<-EOF
         #cloud-config
