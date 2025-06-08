@@ -30,13 +30,13 @@ jobs:
           terraform plan -no-color
       
       - name: Trivy Setup
-        uses: aquasecurity/setup-trivy@master
+        uses: aquasecurity/setup-trivy@https://github.com/aquasecurity/setup-trivy/commit/9ea583eb67910444b1f64abf338bd2e105a0a93d #v0.2.3
         with:
           version: "latest"
 
 
       - name: Run Trivy scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@76071ef0d7ec797419534a183b498b4d6366cf37 #v0.31.0
         with:
           scan-type: "fs"
           scan-ref: "."
