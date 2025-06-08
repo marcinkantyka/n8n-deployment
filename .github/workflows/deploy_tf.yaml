@@ -16,6 +16,17 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs" 
+          scan-ref: "./opentofu"
+          format: "table"
+          exit-code: 1
+          ignore-unfixed: false
+          severity: "CRITICAL,HIGH,MEDIUM" 
+
+
       - name: OpenTofu Init with TFC
         working-directory: ./opentofu
         env:
