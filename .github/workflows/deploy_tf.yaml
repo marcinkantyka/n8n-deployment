@@ -17,6 +17,7 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init with TFC
+        working-directory: ./opentofu
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
@@ -24,6 +25,7 @@ jobs:
           tofu init
 
       - name: Terraform Plan (Triggers remote run)
+        working-directory: ./opentofu
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
