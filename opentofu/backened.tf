@@ -11,7 +11,7 @@ terraform {
     required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "~> 1.6.1"  
+      version = "~> 1.51.0"  
     }
   }
 
