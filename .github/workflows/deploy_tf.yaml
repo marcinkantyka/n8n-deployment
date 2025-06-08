@@ -1,0 +1,31 @@
+name: Deploy via Terraform Cloud
+
+on:
+  workflow_dispatch:
+
+jobs:
+  plan:
+    name: Create Plan in TFC
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init with TFC
+        env:
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+        run: |
+          tofu init
+
+      - name: Terraform Plan (Triggers remote run)
+        env:
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+        run: |
+          tofu plan
