@@ -29,15 +29,23 @@ jobs:
         run: |
           terraform plan -no-color
       
+      - name: Trivy Setup
+        uses: aquasecurity/setup-trivy@master
+        with:
+          version: "latest"
+
+
       - name: Run Trivy scan
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: "config"
-          scan-ref: "./tf"
+          scan-type: "fs"
+          scan-ref: "."
           format: "table"
           exit-code: 1
           ignore-unfixed: false
           severity: "CRITICAL,HIGH,MEDIUM"
+          trivy-config: trivy.yaml
+          skip-setup-trivy: true
 
   wait-for-approval:
     name: Wait for Manual Approval
