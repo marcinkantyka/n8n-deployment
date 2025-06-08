@@ -1,5 +1,5 @@
 resource "hcloud_server" "server_test" {
-  name        = "{{ var.server_name }}"
+  name        = var.server_name
   ssh_keys    = [data.hcloud_ssh_key.key.id]
   image       = "ubuntu-24.04"
   server_type = "cx22"
