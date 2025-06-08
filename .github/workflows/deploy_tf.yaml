@@ -30,7 +30,7 @@ jobs:
           terraform plan -no-color
       
       - name: Trivy Setup
-        uses: aquasecurity/setup-trivy@https://github.com/aquasecurity/setup-trivy/commit/9ea583eb67910444b1f64abf338bd2e105a0a93d #v0.2.3
+        uses: aquasecurity/setup-trivy@9ea583eb67910444b1f64abf338bd2e105a0a93d #v0.2.3
         with:
           version: "latest"
 
