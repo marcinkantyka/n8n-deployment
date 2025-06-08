@@ -1,11 +1,8 @@
-terraform { 
-  cloud { 
-    
-    organization = "mk_org" 
-    hostname = "app.terraform.io"
-    
-    workspaces { 
-      name = "n8n-deployment" 
-    } 
-  } 
+terraform {
+  backend "remote" {
+    organization = "mk_org"
+    workspaces {
+      name = "n8n-deployment"
+    }
+  }
 }
