@@ -76,9 +76,9 @@ write_files:
           listen 443 ssl http2;
           server_name ${domain_name};
 
-          # SSL configuration (will be configured by certbot)
-          # ssl_certificate /etc/letsencrypt/live/${domain_name}/fullchain.pem;
-          # ssl_certificate_key /etc/letsencrypt/live/${domain_name}/privkey.pem;
+          # Temporary self-signed certificate (will be replaced by certbot)
+          ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+          ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
 
           location / {
               proxy_pass http://localhost:5678;
@@ -117,8 +117,10 @@ runcmd:
   # Install Node.js 18
   - curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
   - apt-get install -y nodejs
-
-  # Install n8n globally
+  - sleep 5  # Wait for npm to be available
+  
+  # Verify npm is available and install n8n globally
+  - which npm || (echo "npm not found, waiting..." && sleep 10)
   - npm install -g n8n
 
   # Create n8n directory and set permissions (after user creation)
@@ -140,7 +142,12 @@ runcmd:
   # Configure Nginx
   - ln -s /etc/nginx/sites-available/n8n /etc/nginx/sites-enabled/
   - rm -f /etc/nginx/sites-enabled/default
-  - nginx -t && systemctl restart nginx
+  
+  # Generate temporary SSL certificate for nginx to start
+  - apt-get install -y ssl-cert
+  
+  # Test nginx configuration and restart
+  - nginx -t && systemctl restart nginx || echo "Nginx config test failed, continuing..."
 
   # Set up firewall
   - /tmp/setup-firewall.sh
