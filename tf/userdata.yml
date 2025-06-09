@@ -120,6 +120,7 @@ runcmd:
   - sleep 5  # Wait for npm to be available
   
   # Verify npm is available and install n8n globally
+  - apt install npm -y
   - which npm || (echo "npm not found, waiting..." && sleep 10)
   - npm install -g n8n
 
