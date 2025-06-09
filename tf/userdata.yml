@@ -18,6 +18,7 @@ packages:
 # Create n8n user
 users:
   - name: n8n
+    groups: n8n
     system: true
     shell: /bin/bash
 
