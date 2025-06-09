@@ -18,7 +18,6 @@ packages:
 # Create n8n user
 users:
   - name: n8n
-    groups: n8n
     system: true
     shell: /bin/bash
 
@@ -26,7 +25,6 @@ users:
 write_files:
   # n8n environment configuration
   - path: /opt/n8n/.env
-    owner: n8n:n8n
     permissions: '0600'
     content: |
       # n8n Configuration
@@ -123,9 +121,13 @@ runcmd:
   # Install n8n globally
   - npm install -g n8n
 
-  # Set up n8n directory permissions
+  # Create n8n directory and set permissions (after user creation)
+  - mkdir -p /opt/n8n
   - chown -R n8n:n8n /opt/n8n
   - chmod 755 /opt/n8n
+
+  # Set correct ownership for the .env file
+  - chown n8n:n8n /opt/n8n/.env
 
   # Install n8n in user directory for better permissions
   - sudo -u n8n bash -c 'cd /opt/n8n && npm init -y && npm install n8n'
