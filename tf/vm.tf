@@ -12,11 +12,15 @@ resource "hcloud_server" "server_test" {
     }
  
   public_net {
-    ipv4_enabled = false
-    ipv6_enabled = true
+    ipv4_enabled = true
+    ipv6_enabled = false
   }
 
     firewall_ids = [hcloud_firewall.custom.id]
 
     #user_data = file("${path.module}/userdata.yml")
+}
+
+resource "hcloud_primary_ip" "namipv4" { 
+  
 }

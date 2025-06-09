@@ -32,13 +32,13 @@ write_files:
     content: |
       # n8n Configuration
       N8N_BASIC_AUTH_ACTIVE=true
-      N8N_BASIC_AUTH_USER=${admin_username}
+      # maybe only reset after install? N8N_BASIC_AUTH_USER=${admin_username}
       N8N_BASIC_AUTH_PASSWORD=${admin_password}
       N8N_HOST=0.0.0.0
       N8N_PORT=5678
       N8N_PROTOCOL=http
       WEBHOOK_URL=https://${domain_name}/
-      GENERIC_TIMEZONE=${timezone}
+      GENERIC_TIMEZONE="Europe/Warsaw"
 
   # n8n systemd service
   - path: /etc/systemd/system/n8n.service
