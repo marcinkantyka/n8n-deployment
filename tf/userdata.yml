@@ -20,8 +20,6 @@ users:
   - name: n8n
     system: true
     shell: /bin/bash
-    home: /opt/n8n
-    create_home: true
 
 # Write configuration files
 write_files:
