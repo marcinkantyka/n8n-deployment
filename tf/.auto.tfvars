@@ -6,7 +6,7 @@ firewall_rules = [
   },
   {
     protocol   = "tcp"
-    port       = "any"
+    port       = "443"
     source_ips = ["217.119.67.226/32"]
   },
   {

@@ -18,5 +18,5 @@ resource "hcloud_server" "server_test" {
 
     firewall_ids = [hcloud_firewall.custom.id]
 
-    user_data = user_data = file("${path.module}/userdata.yml")
+    #user_data = file("${path.module}/userdata.yml")
 }
