@@ -20,7 +20,3 @@ resource "hcloud_server" "server_test" {
 
     #user_data = file("${path.module}/userdata.yml")
 }
-
-resource "hcloud_primary_ip" "namipv4" { 
-  
-}
