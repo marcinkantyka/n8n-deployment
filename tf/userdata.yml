@@ -20,11 +20,12 @@ users:
   - name: n8n
     system: true
     shell: /bin/bash
+    homedir: /home/n8n
 
 # Write configuration files
 write_files:
   # n8n environment configuration
-  - path: /opt/n8n/.env
+  - path: /home/n8n/.env
     permissions: '0600'
     content: |
       # n8n Configuration
@@ -37,6 +38,7 @@ write_files:
       WEBHOOK_URL=https://${domain_name}/
       GENERIC_TIMEZONE="Europe/Warsaw"
 
+
   # n8n systemd service
   - path: /etc/systemd/system/n8n.service
     permissions: '0644'
@@ -48,9 +50,9 @@ write_files:
       [Service]
       Type=simple
       User=n8n
-      WorkingDirectory=/opt/n8n
-      EnvironmentFile=/opt/n8n/.env
-      ExecStart=/opt/n8n/node_modules/.bin/n8n start
+      WorkingDirectory=/home/n8n
+      EnvironmentFile=/home/n8n/.env
+      ExecStart=/usr/local/bin/n8n start
       Restart=on-failure
       RestartSec=5
       StandardOutput=syslog
@@ -117,7 +119,7 @@ runcmd:
   # Install Node.js 18
   - curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
   - apt-get install -y nodejs
-  - sleep 5  # Wait for npm to be available
+  - sleep 5  # Wait for npm to be available??
   
   # Verify npm is available and install n8n globally
   - apt install npm -y
