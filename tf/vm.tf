@@ -18,5 +18,10 @@ resource "hcloud_server" "server_test" {
 
     firewall_ids = [hcloud_firewall.custom.id]
 
-    user_data = templatefile("${path.module}/userdata.yml")
+    user_data = templatefile("${path.module}/userdata.yml", {
+        domain_name    = var.domain_name
+        admin_username = var.admin_username
+        admin_password = var.admin_password
+}
+)
 }
