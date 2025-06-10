@@ -20,3 +20,19 @@ variable "ssh_key_name" {
   description = "name of the ssh key to be used"
   type        = string
 }
+
+variable "domain_name" {
+  description = "domain name to be used"
+  type        = string
+}
+
+variable "admin_username" {
+  description = "username for the admin user"
+  type        = string
+}
+
+variable "admin_password" {
+  description = "password for the admin user"
+  type        = string
+  sensitive   = true
+}

@@ -22,6 +22,6 @@ resource "hcloud_server" "server_test" {
         domain_name    = var.domain_name
         admin_username = var.admin_username
         admin_password = var.admin_password
-}
+        }
 )
 }
