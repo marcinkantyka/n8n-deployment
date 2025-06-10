@@ -35,6 +35,7 @@ write_files:
       N8N_HOST=0.0.0.0
       N8N_PORT=5678
       N8N_PROTOCOL=http
+      N8N_PUSH_BACKEND=websocket  ### connection lost issue
       WEBHOOK_URL=https://${domain_name}/
       GENERIC_TIMEZONE="Europe/Warsaw"
 
@@ -87,12 +88,16 @@ write_files:
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
               proxy_set_header Connection 'upgrade';
-              proxy_set_header Host $host;
+              proxy_set_header Host $http_host;
               proxy_set_header X-Real-IP $remote_addr;
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
               proxy_set_header X-Forwarded-Proto $scheme;
               proxy_cache_bypass $http_upgrade;
-              
+              proxy_set_header Origin $scheme://$http_host;
+                  
+              proxy_cache off;
+              proxy_buffering off;
+
               # WebSocket support
               proxy_set_header Upgrade $http_upgrade;
               proxy_set_header Connection "upgrade";
