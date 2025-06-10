@@ -21,5 +21,5 @@ server_name = "goblin"
 ssh_key_name = "wsl-ssh-pub"
 domain_name  = "n8n.boreddevops.xyz"
 
-#admin_username = "admin"
-#admin_password = "ChangeMePassword123!"
+admin_username = "admin"
+admin_password = "ChangeMePassword123!"
