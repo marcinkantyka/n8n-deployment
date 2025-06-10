@@ -132,7 +132,7 @@ runcmd:
   - chmod 755 /opt/n8n
 
   # Set correct ownership for the .env file
-  - chown n8n:n8n /home/n8n/.env
+  - chown n8n:n8n -R /home/n8n
 
   # Install n8n in user directory for better permissions
   - sudo -u n8n bash -c 'cd /opt/n8n && npm init -y && npm install n8n'
