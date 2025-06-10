@@ -1,5 +1,12 @@
 # n8n-deployment
 
+<!-- Badges -->
+![Terraform Version](https://img.shields.io/badge/Terraform-1.5%2B-blue?logo=terraform)
+![Terraform Cloud](https://img.shields.io/badge/Terraform%20Cloud-Enabled-623CE4?logo=terraform)
+![Last Commit](https://img.shields.io/github/last-commit/marcinkantyka/n8n-deployment)
+![Issues](https://img.shields.io/github/issues/marcinkantyka/n8n-deployment)
+![Pull Requests](https://img.shields.io/github/issues-pr/marcinkantyka/n8n-deployment)
+
 This repository provides an automated, production-ready deployment of [n8n](https://n8n.io/) using Terraform and cloud-init on a Hetzner Cloud Ubuntu server. It provisions the infrastructure, configures security, and sets up n8n with HTTPS and basic authentication.
 
 ---
