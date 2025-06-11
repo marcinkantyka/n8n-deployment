@@ -7,7 +7,7 @@
 ![Issues](https://img.shields.io/github/issues/marcinkantyka/n8n-deployment)
 ![Pull Requests](https://img.shields.io/github/issues-pr/marcinkantyka/n8n-deployment)
 
-This repository provides an automated, production-ready deployment of [n8n](https://n8n.io/) using Terraform and cloud-init on a Hetzner Cloud Ubuntu server. It provisions the infrastructure, configures security, and sets up n8n with HTTPS and basic authentication.
+This repository provides an automated, ~~production-ready~~ deployment of [n8n](https://n8n.io/) using Terraform and cloud-init on a Hetzner Cloud Ubuntu server. It provisions the infrastructure, configures security, and sets up n8n with HTTPS and basic authentication.
 
 ---
 
