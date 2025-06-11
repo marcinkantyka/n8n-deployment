@@ -1,31 +1,104 @@
 name: Deploy via Terraform Cloud
-
 on:
   workflow_dispatch:
-
+  
 jobs:
   plan:
     name: Create Plan in TFC
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      - name: Terraform Init with TFC
-        env:
-          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+      
+      - name: Terraform Init
+        working-directory: ./tf
         run: |
-          tofu init
-
-      - name: Terraform Plan (Triggers remote run)
-        env:
-          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          terraform init
+      
+      - name: Terraform Validate
+        working-directory: ./tf
         run: |
-          tofu plan
+          terraform validate -no-color
+      
+      - name: Terraform Plan (Triggers remote execution in TFC)
+        working-directory: ./tf
+        run: |
+          terraform plan -no-color
+      
+      - name: Trivy Setup
+        uses: aquasecurity/setup-trivy@9ea583eb67910444b1f64abf338bd2e105a0a93d #v0.2.3
+        with:
+          version: "latest"
+
+
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@76071ef0d7ec797419534a183b498b4d6366cf37 #v0.31.0
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "table"
+          exit-code: 1
+          ignore-unfixed: false
+          severity: "CRITICAL,HIGH,MEDIUM"
+          trivy-config: trivy.yaml
+          skip-setup-trivy: true
+
+  wait-for-approval:
+    name: Wait for Manual Approval
+    runs-on: ubuntu-latest
+    needs: plan
+    steps:
+      - name: Get Latest Run URL
+        id: get-run-url
+        run: |
+          WORKSPACE_ID=$(curl -s \
+            --header "Authorization: Bearer ${{ secrets.TF_API_TOKEN }}" \
+            --header "Content-Type: application/vnd.api+json" \
+            "https://app.terraform.io/api/v2/organizations/mk_org/workspaces/n8n-deployment" \
+            | jq -r '.data.id')
+          
+          LATEST_RUN=$(curl -s \
+            --header "Authorization: Bearer ${{ secrets.TF_API_TOKEN }}" \
+            --header "Content-Type: application/vnd.api+json" \
+            "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/runs?page%5Bsize%5D=1" \
+            | jq -r '.data[0].id')
+          
+          RUN_URL="https://app.terraform.io/app/mk_org/workspaces/n8n-deployment/runs/$LATEST_RUN"
+          echo "run_url=$RUN_URL" >> $GITHUB_OUTPUT
+          
+      - name: Manual Approval Required - details for review
+        run: |
+          echo "Plan completed. Waiting for manual approval to proceed with apply."
+          echo ""
+          echo "📋 Review the plan in Terraform Cloud:"
+          echo "🔗 ${{ steps.get-run-url.outputs.run_url }}"
+          echo ""
+          echo "⚠️  Please review the plan carefully before approving this deployment."
+          echo "✅ Once reviewed, approve this GitHub Actions workflow to proceed with apply."
+
+  apply:
+    name: Apply Changes in TFC
+    runs-on: ubuntu-latest
+    needs: wait-for-approval
+    environment: n8n
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      
+      - name: Terraform Init
+        working-directory: ./tf
+        run: |
+          terraform init
+      
+      - name: Terraform Apply (Triggers remote execution in TFC)
+        working-directory: ./tf
+        run: |
+          terraform apply -auto-approve -no-color
